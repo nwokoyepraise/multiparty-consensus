@@ -1,26 +1,18 @@
-REMIX DEFAULT WORKSPACE
+# Implementation of a multiparty wallet-like consensus contract
 
-Remix default workspace is present when:
-i. Remix loads for the very first time 
-ii. A new workspace is created
-iii. There are no files existing in the File Explorer
+## Features
+* One admin address who can add remove addresses from the owners of the wallet contract
+* Ability of the of any owner to submit proposal
+* Ability of the remaining wallet owners to approve the proposal
+* Ability of the owner of the proposal to call an executeProposal function once the set threshold has been reached
+* Ability of the the admin to change the percentage approval for the proposal
 
-This workspace contains 3 directories:
-
-1. 'contracts': Holds three contracts with different complexity level, denoted with number prefix in file name.
-2. 'scripts': Holds two scripts to deploy a contract. It is explained below.
-3. 'tests': Contains one Solidity test file for 'Ballot' contract & one JS test file for 'Storage' contract
-
-SCRIPTS
-
-The 'scripts' folder contains two example async/await scripts for deploying the 'Storage' contract.
-For the deployment of any other contract, 'contractName' and 'constructorArgs' should be updated (along with other code if required). 
-
-Also, there is a script containing some unit tests for Storage contract inside tests directory.
-
-To run a script, right click on file name in the file explorer and click 'Run'. Remember, Solidity file must already be compiled.
-Output from script will appear in remix terminal.
-
-Please note, 'require' statement is supported in a limited manner for Remix supported modules.
-For now, modules supported by Remix are ethers, web3, swarmgw, chai, remix and hardhat only for hardhat.ethers object/plugin.
-For unsupported modules, an error like this will be thrown: '<module_name> module require is not supported by Remix IDE will be shown.'
+## Available functions and Implementation Conditions
+*  setThreshold: Conditions >>> onlyAdmin, thresholdNotMoreThan100
+* addWalletOwner: Conditions >>> onlyAdmin, notAddressZero, walletHadNotBeenAdded
+*  addWalletOwners: Conditions >>> onlyAdmin, walletsLengthLessThan30, notAddressZero, walletHadNotBeenAdded
+* removeWalletOwner: Conditions >>> onlyAdmin, notAddressZero, walletHadBeenAdded
+*   removeWalletOwners: Conditions >>> onlyAdmin, walletsLengthLessThan30, notAddressZero, walletHadBeenAdded
+* submitProposal: Conditions >>> isWalletOwner, proposalDoesNotAlreadyExist
+* approveProposal: Conditions >>> isWalletOwner, hasNotApprovedProposal
+* executeProposal: Conditions >>> isWalletOwner, isProposalOwner, hasReachedThreshold
